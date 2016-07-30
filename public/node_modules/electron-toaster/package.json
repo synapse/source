@@ -1,0 +1,52 @@
+{
+  "name": "electron-toaster",
+  "version": "1.0.8",
+  "description": "a simple toaster for electron",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "bump": "npm version patch && git push && git push --tags && npm publish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/s-a/electron-toaster.git"
+  },
+  "keywords": [
+    "electron",
+    "toaster",
+    "notify",
+    "desktop-notification"
+  ],
+  "author": {
+    "name": "Stephan Ahlf",
+    "email": "stephan.ahlf@gmail.com",
+    "url": "https://github.com/s-a"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/s-a/electron-toaster/issues"
+  },
+  "homepage": "https://github.com/s-a/electron-toaster#readme",
+  "gitHead": "f3dcad8e8fdc541b9ed91f40bb94c563030c88e9",
+  "_id": "electron-toaster@1.0.8",
+  "_shasum": "bb5347643aa75e646d301404eea3b0d9e2a0a296",
+  "_from": "electron-toaster@*",
+  "_npmVersion": "2.11.2",
+  "_nodeVersion": "0.12.6",
+  "_npmUser": {
+    "name": "s-a",
+    "email": "stephan.ahlf@gmail.com"
+  },
+  "maintainers": [
+    {
+      "name": "s-a",
+      "email": "stephan.ahlf@gmail.com"
+    }
+  ],
+  "dist": {
+    "shasum": "bb5347643aa75e646d301404eea3b0d9e2a0a296",
+    "tarball": "http://registry.npmjs.org/electron-toaster/-/electron-toaster-1.0.8.tgz"
+  },
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/electron-toaster/-/electron-toaster-1.0.8.tgz"
+}

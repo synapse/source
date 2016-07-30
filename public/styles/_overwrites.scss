@@ -1,0 +1,111 @@
+
+//BOOTSTRAP
+.form-control:focus {
+	border: 1px solid #ccc;
+	box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+}
+
+.btn {
+	outline: none !important;
+
+	&.btn-primary {
+		@include primary-button;
+		font-weight: 300;
+		padding: 5px 13px;
+		text-align: center;
+	}
+
+	&.btn-default {
+		@include default-button;
+		font-weight: 300;
+		padding: 5px 13px;
+		text-align: center;
+	}
+
+	&.btn-xs {
+		padding: 1px 10px;
+  		font-size: 12px;
+	}
+}
+
+
+.bootbox-body {
+	.warning {
+		width: 70px;
+		height: 70px;
+		float: left;
+		margin-right: 20px;
+		font-size: 60px;
+		text-align: center;
+		color: orange;
+
+		&:before {
+			content: "\f071";
+			font-family: "FontAwesome";
+		}
+	}
+
+	.info {
+		width: 70px;
+		height: 70px;
+		float: left;
+		margin-right: 20px;
+		font-size: 60px;
+		text-align: center;
+		color: #006bc2;
+
+		&:before {
+			content: "\f05a";
+			font-family: "FontAwesome";
+		}
+	}
+
+	.question {
+		width: 70px;
+		height: 70px;
+		float: left;
+		margin-right: 20px;
+		font-size: 60px;
+		text-align: center;
+		color: #006bc2;
+
+		&:before {
+			content: "\f059";
+			font-family: "FontAwesome";
+		}
+	}
+
+	.error {
+		width: 70px;
+		height: 70px;
+		float: left;
+		margin-right: 20px;
+		font-size: 60px;
+		text-align: center;
+		color: rgb(244, 37, 0);
+
+		&:before {
+			content: "\f06a";
+			font-family: "FontAwesome";
+		}
+	}
+
+	.success {
+		width: 70px;
+		height: 70px;
+		float: left;
+		margin-right: 20px;
+		font-size: 60px;
+		text-align: center;
+		color: rgb(0, 143, 21);
+
+		&:before {
+			content: "\f00c";
+			font-family: "FontAwesome";
+		}
+	}
+}
+
+.tooltip {
+	z-index: 9999999999;
+}

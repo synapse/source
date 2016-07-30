@@ -1,0 +1,472 @@
+<div class="system-buttons">
+    <button class="system quit" ng-click="Bridge.quit()"></button>
+    <button class="system minimize" ng-click="Bridge.minimize()"></button>
+    <button class="system maximize" ng-click="Bridge.maximize()"></button>
+</div>
+
+<split-pane>
+    <split-pane-component width="40%" min-width="400px">
+
+        <split-pane>
+            <split-pane-component width="50%" min-width="200px">
+
+                <div class="toolbar toolbar-left">
+                    <ul>
+                        <li class="last">
+                            <button class="inset" data-position="left" data-toggle="dropdown" data-target="#user-dropdown">
+                                <i class="fa fa-caret-down"></i>
+                            </button>
+                        </li>
+                        <li class="last win-left">
+                            <button ng-click="toggleSearch()"
+                                    class="tip"
+                                    data-container="body"
+                                    data-original-title="{{ 'TOOLTIP_TOGGLE_SEARCH' | translate }}"
+                                    data-placement="bottom"
+                                    data-delay='{"show":"2000", "hide":"0"}'>
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </li>
+                        <li class="last win-left">
+                            <button ng-click="Snippets.newGroup()"
+                                    class="tip"
+                                    data-container="body"
+                                    data-original-title="{{ 'TOOLTIP_ADD_GROUP' | translate }}"
+                                    data-placement="bottom"
+                                    data-delay='{"show":"2000", "hide":"0"}'>
+                                <i class="fa fa-plus-circle"></i>
+                            </button>
+                        </li>
+                        <li class="last win-left">
+                            <button class="tip"
+                                    data-toggle="dropdown"
+                                    data-position="left"
+                                    data-target="#category-order-dropdown"
+                                    data-container="body"
+                                    data-original-title="{{ 'TOOLTIP_REORDER_CATEGORIES' | translate }}"
+                                    data-placement="bottom"
+                                    data-delay='{"show":"2000", "hide":"0"}'>
+                                <i class="fa fa-sort-amount-asc"></i>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="pane-content dark-pane nano">
+                    <div class="nano-content">
+                        <div class="searchbox-wrapper">
+                            <input type="text" class="dark-search" ng-model="Snippets.filters.queryQ" placeholder="{{ 'PLACEHOLDER_SEARCH_SNIPPET' | translate }}" />
+                            <i class="fa fa-search"></i>
+                        </div>
+
+                        <section id="groups" ng-class="{collapsed: user.preferences.groupsCollapsed}">
+                            <h2 class="noselect">
+                                <span translate="LABEL_GROUPS"></span>
+                                <button ng-click="collapse('groups')"><i class="fa fa-caret-up"></i></button>
+                            </h2>
+
+                            <div ng-hide="Snippets.loadingGroups" class="collapsable">
+                                <ul class="group-list">
+                                    <li ng-class="{active: !Snippets.filters.queryG}">
+                                        <span class="badge" ng-class="{inset: !Snippets.counter.total, normal: Snippets.counter.total}">{{ Snippets.counter.total }}</span>
+                                        <a href="" ng-click="showInGroup(null)" translate="LABEL_ALL"></a>
+                                    </li>
+                                    <li ng-class="{active: (Snippets.filters.queryG == group.id)}" ng-repeat="group in Snippets.groups| orderBy:user.preferences.groupReorder:user.preferences.groupReorderReverse">
+
+                                        <span class="badge" ng-class="{inset: !Snippets.counter[group.id], normal: Snippets.counter[group.id], edit: group.editable}">
+                                            <span class="counter">{{ Snippets.counter[group.id] || 0 }}</span>
+                                            <span class="options">
+                                                <i class="fa fa-pencil" title="{{ 'LABEL_EDIT_GROUP' | translate }}" ng-click="Snippets.editGroup(group)"></i> &nbsp;
+                                                <i class="fa fa-close" title="{{ 'LABEL_DELETE_GROUP' | translate }}" ng-click="Snippets.deleteGroup(group)"></i>
+                                            </span>
+                                        </span>
+
+                                        <a href="" ng-click="showInGroup(group.id)">{{ group.name }}</a>
+                                    </li>
+
+                                    <li ng-class="{active: (Snippets.filters.queryG == 'sharedwithme')}" ng-show="Snippets.counter['sharedwithme']">
+                                        <span class="badge" ng-class="{inset: !Snippets.counter['sharedwithme'], normal: Snippets.counter['sharedwithme']}">
+                                            <span class="counter">{{ Snippets.counter['sharedwithme'] }}</span>
+                                        </span>
+
+                                        <a href="" ng-click="showInGroup('sharedwithme')" translate="LABEL_SHARED_WITH_ME"></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </section>
+
+                        <section id="tags" ng-class="{collapsed: user.preferences.tagsCollapsed}" ng-if="Snippets.hasTags()">
+                            <h2 class="noselect">
+                                <span translate="LABEL_TAGS"></span>
+                                <button ng-click="collapse('tags')"><i class="fa fa-caret-up"></i></button>
+                            </h2>
+
+                            <div ng-hide="Snippets.loadingGroups" class="collapsable">
+                                <ul class="group-list">
+                                    <li ng-repeat="(tag, count) in Snippets.tags" ng-class="{active: (Snippets.filters.queryT.indexOf(tag) != -1 )}">
+                                        <span class="badge normal" ng-class="{edit: Snippets.filters.queryT == tag}">
+                                            <span class="counter">{{ count }}</span>
+                                            <span class="options tagsOptions">
+                                                <i class="fa fa-close" ng-click="removeTagFilter(tag)"></i>
+                                            </span>
+                                        </span>
+
+                                        <a href="" ng-click="showWithTag(tag)">{{ tag }}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </section>
+
+                        <div class="spinner" ng-show="Snippets.loadingGroups">
+                            <svg class="spinner white" width="16px" height="16px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                                <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </split-pane-component>
+
+            <split-pane-divider width="1px" class="dark">
+                <div class="toolbar-divider"></div>
+            </split-pane-divider>
+
+            <split-pane-component width="50%" min-width="199px">
+
+                <div class="toolbar">
+                    <ul>
+                        <li>
+                            <button ng-click="Snippets.newSnippet(Snippets.filters.queryG)"
+                                    class="tip"
+                                    data-container="body"
+                                    data-original-title="{{ 'TOOLTIP_ADD_SNIPPET' | translate }}"
+                                    data-placement="bottom"
+                                    data-delay='{"show":"2000", "hide":"0"}'>
+                                <i class="fa fa-plus-circle"></i> <span translate="LABEL_NEW"></span>
+                            </button>
+                        </li>
+
+                        <li class="last">
+                            <button ng-click="user.openPrefs()"
+                                    class="tip"
+                                    data-original-title="{{ 'TOOLTIP_OPEN_PREFS' | translate }}"
+                                    data-container="body"
+                                    data-placement="bottom"
+                                    data-delay='{"show":"2000", "hide":"0"}'>
+                                <i class="fa fa-cog"></i>
+                            </button>
+                        </li>
+                        <li class="last">
+                            <button class="tip"
+                                    data-original-title="{{ 'TOOLTIP_REORDER_SNIPPETS' | translate }}"
+                                    data-toggle="dropdown"
+                                    data-position="left"
+                                    data-target="#snippet-order-dropdown"
+                                    data-container="body"
+                                    data-placement="bottom"
+                                    data-delay='{"show":"2000", "hide":"0"}'>
+                                <i class="fa fa-sort-amount-asc"></i>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="pane-content nano">
+                    <div class="nano-content">
+                        <div ng-hide="Snippets.loadingSnippets">
+                            <ul class="list-group snippets">
+                                <li
+                                    class="list-group-item"
+                                    draggable="false"
+                                    ng-class="{active: Snippets.selected == snippet}"
+                                    ng-repeat="snippet in Snippets.snippets | orderBy:user.preferences.snippetReorder:user.preferences.snippetReorderReverse | search:Snippets.filters.queryQ | group:Snippets.filters.queryG | tag:Snippets.filters.queryT"
+                                >
+                                    <a href="" draggable="false" ng-click="setSelected(snippet)" ng-class="{groupLess: Snippets.filters.queryG}">
+                                        <div class="snippet-name">{{ snippet.name }}</div>
+                                        <div class="snippet-info">
+                                            <small class="pull-left categoryName" ng-hide="Snippets.filters.queryG">
+                                                {{ snippet.groupName }} <i class="fa fa-tags" ng-if="snippet.tags.length"></i> <i class="fa fa-book" ng-if="snippet.notes.length"></i>
+                                            </small>
+                                            <small class="pull-right timeAgo" ng-hide="Snippets.filters.queryG">{{ snippet.snippet.updatedAt | toNow }}</small>
+                                            <small class="pull-right size" ng-hide="Snippets.filters.queryG">{{ snippet.code | size }}</small>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </a>
+
+                                    <button type="button" ng-click="Snippets.deleteSnippet(snippet)">
+                                        <i class="fa fa-close" title="{{ 'TOOLTIP_DELETE_SNIPPET' | translate }}"></i>
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div ng-show="Snippets.loadingSnippets">
+                        <br/>
+                        <br/>
+                        <div class="spinner">
+                            <svg class="spinner black" width="16px" height="16px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                                <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </split-pane-component>
+        </split-pane>
+
+    </split-pane-component>
+
+    <split-pane-divider width="1px">
+        <div class="toolbar-divider"></div>
+    </split-pane-divider>
+
+    <split-pane-component min-width="550px">
+
+        <div class="toolbar toolbar-right">
+            <ul ng-show="Snippets.selected">
+                <li>
+                    <label translate="LABEL_LANGUAGE"></label> <select ng-model="Editor.mode" ng-options="mode.mode as mode.language for mode in Editor.modes | modes:Snippets.selected.type" ng-change="modeChanged()"></select>
+                </li>
+                <li>
+                    <label translate="TITLE_GROUP"></label> <select ng-model="Snippets.selected.group" ng-options="group.name for group in Snippets.groups track by group.id" ng-change="Snippets.selected.groupChanged()"></select>
+                </li>
+                <li>
+                    <button ng-click="toggleTags()">
+                        <i class="fa fa-tags"></i> <span translate="LABEL_TAGS"></span>
+                    </button>
+                </li>
+                <li>
+                    <button ng-click="toggleNotes()">
+                        <i class="fa fa-book"></i> <span translate="">LABEL_NOTES</span>
+                    </button>
+                </li>
+                <li class="last">
+                    <button ng-hide="Snippets.selected.saving || Snippets.selected.saved" ng-click="Snippets.selected.save()">
+                        <i class="fa fa-floppy-o"></i> <span translate="LABEL_SAVE"></span>
+                    </button>
+
+                    <button ng-show="Snippets.selected.saving">
+                        <svg class="spinner white" width="16px" height="16px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                            <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+                        </svg>
+                    </button>
+                    <button ng-show="Snippets.selected.saved">
+                        <i class="fa fa-check"></i>
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+
+        <div class="pane-content">
+            <div ng-show="Snippets.selected" id="selected-snippet">
+                <div ng-if="Snippets.selected">
+                    <div id="tags-input">
+                        <tags-input ng-model="Snippets.selected.tags" replace-spaces-with-dashes="false" placeholder="{{ 'PLACEHOLDER_ADD_TAGS' | translate }}">
+                            <auto-complete source="Snippets.getTags($query)"></auto-complete>
+                        </tags-input>
+                    </div>
+                    <div id="notes-input">
+                        <textarea ng-model="Snippets.selected.notes" placeholder="{{ 'PLACEHOLDER_ADD_NOTES' | translate }}"></textarea>
+                    </div>
+                </div>
+                <div style="height: 50px; max-height: 50px; min-height: 50px;">
+                    <div class="col-sm-12" style="height: 100%; position: relative;">
+                        <input class="snippetTitle" type="text" ng-model="Snippets.selected.name" />
+
+                        <div class="share-wrapper" ng-class="{active: share.show}" ng-if="Snippets.selected.snippet.id">
+                            <div class="share" ng-class="{loading: share.sharing}">
+                                <i class="fa fa-refresh fa-spin"></i>
+                                <input type="text" on="share.show" placeholder="{{ 'PLACEHOLDER_SHARE_WITH_EMAIL' | translate }}" ng-model="share.mail" enter="shareSnippet()" ng-disabled="share.sharing" />
+                                <button class="exec-share" type="button" ng-click="shareSnippet()">
+                                    <i class="fa fa-chevron-circle-right"></i>
+                                </button>
+                            </div>
+
+                            <button class="toggle-share"
+                                    alt="{{ 'ALT_SHARE_SNIPPET' | translate }}"
+                                    title="{{ 'ALT_SHARE_SNIPPET' | translate }}"
+                                    ng-click="share.show = !share.show">
+                                <i class="fa fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div id="editor-wrapper">
+                    <div style="height: 100%;" class="aceWrapper" ui-ace="Editor" ng-model="Snippets.selected.code"></div>
+                </div>
+            </div>
+
+            <div ng-show="!Snippets.selected" class="noselect" style="position: absolute;top: 45%;text-align: center;left: 0;right: 0;font-size: 24px;color: #ccc; cursor: default;" translate="LABEL_CLICK_TO_VIEW_CODE"></div>
+        </div>
+
+    </split-pane-component>
+</split-pane>
+
+<preferences></preferences>
+
+<div class="dropdown" id="user-dropdown">
+    <ul class="dropdown-menu fixed">
+        <li class="-no-hover">
+            <a href="" ng-click="user.openProfile()"><span translate="LABEL_HEY"></span>, <strong>{{ user.getCurrent().get('name') }}</strong></a>
+        </li>
+        <li class="divider"></li>
+        <li class="dropdown-submenu">
+            <a href="" translate="LABEL_NEW"></a>
+
+            <ul class="dropdown-menu">
+                <li>
+                    <a href="" ng-click="Snippets.newGroup()" translate="LABEL_NEW_GROUP"></a>
+                </li>
+                <li>
+                    <a href="" ng-click="Snippets.newSnippet(Snippets.filters.queryG)" translate="LABEL_NEW_SNIPPET"></a>
+                </li>
+            </ul>
+        </li>
+        <li class="divider"></li>
+        <li>
+            <a href="" ng-click="user.openPrefs()" translate="LABEL_PREFERENCES"></a>
+        </li>
+        <li>
+            <a href="" ng-click="Snippets.sync()" translate="LABEL_SYNC"></a>
+        </li>
+        <li class="dropdown-submenu">
+            <a href="" translate="LABEL_TRANSLATE"></a>
+
+            <ul class="dropdown-menu">
+                <li>
+                    <a href="" ng-click="Snippets.export('json')" translate="LABEL_AS_JSON"></a>
+                </li>
+                <li>
+                    <a href="" ng-click="Snippets.export('html')" translate="LABEL_AS_HTML"></a>
+                </li>
+                <li>
+                    <a href="" ng-click="Snippets.export('md')" translate="LABEL_AS_MD"></a>
+                </li>
+            </ul>
+        </li>
+        <li class="divider" ng-if="OS != 'MacIntel'"></li>
+        <li ng-if="OS != 'MacIntel'">
+            <a href="" ng-click="toggleHelp()" translate="LABEL_HELP"></a>
+        </li>
+        <li class="divider"></li>
+        <li>
+            <a href="" ng-click="user.logout(goToLogin)" translate="LABEL_LOGOUT"></a>
+        </li>
+        <li>
+            <a href="" ng-click="Bridge.quit()" translate="LABEL_EXIT"></a>
+        </li>
+    </ul>
+</div>
+
+<div class="dropdown" id="category-order-dropdown">
+    <ul class="dropdown-menu fixed">
+        <li ng-class="{selected: (user.preferences.groupReorder == 'name')}">
+            <a href="" ng-click="groupReorderCol('name')" translate="LABEL_SORT_TITLE"></a>
+        </li>
+        <li ng-class="{selected: (user.preferences.groupReorder == 'createdAt')}">
+            <a href="" ng-click="groupReorderCol('createdAt')" translate="LABEL_SORT_DATE_CREATED"></a>
+        </li>
+        <li ng-class="{selected: (user.preferences.groupReorder == 'updatedAt')}">
+            <a href="" ng-click="groupReorderCol('updatedAt')" translate="LABEL_SORT_DATE_UPDATED"></a>
+        </li>
+        <li class="divider"></li>
+        <li ng-class="{selected: !user.preferences.groupReorderReverse}">
+            <a href="" ng-click="groupReorderDir(false)" translate="LABEL_ASCENDING"></a>
+        </li>
+        <li ng-class="{selected: user.preferences.groupReorderReverse}">
+            <a href="" ng-click="groupReorderDir(true)" translate="LABEL_DESCENDING"></a>
+        </li>
+    </ul>
+</div>
+
+<div class="dropdown" id="snippet-order-dropdown">
+    <ul class="dropdown-menu fixed">
+        <li ng-class="{selected: (user.preferences.snippetReorder == 'name')}">
+            <a href="" ng-click="snippetReorderCol('name')" translate="LABEL_SORT_TITLE"></a>
+        </li>
+        <li ng-class="{selected: (user.preferences.snippetReorder == 'createdAt')}">
+            <a href="" ng-click="snippetReorderCol('createdAt')" translate="LABEL_SORT_DATE_CREATED"></a>
+        </li>
+        <li ng-class="{selected: (user.preferences.snippetReorder == 'updatedAt')}">
+            <a href="" ng-click="snippetReorderCol('updatedAt')" translate="LABEL_SORT_DATE_UPDATED"></a>
+        </li>
+        <li class="divider"></li>
+        <li ng-class="{selected: !user.preferences.snippetReorderReverse}">
+            <a href="" ng-click="snippetReorderDir(false)" translate="LABEL_ASCENDING"></a>
+        </li>
+        <li ng-class="{selected: user.preferences.snippetReorderReverse}">
+            <a href="" ng-click="snippetReorderDir(true)" translate="LABEL_DESCENDING"></a>
+        </li>
+    </ul>
+</div>
+
+<div class="modal fade" id="profileModal">
+    <div class="modal-dialog" style="width: 600px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close-modal" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" translate="LABEL_PROFILE"></h4>
+            </div>
+            <div class="modal-body" style="padding: 20px 25px; padding-bottom: 10px;">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <img class="thumbnail img-responsive" style="border-radius: 50%;" ng-src="http://www.gravatar.com/avatar/{{ user.gravatar() }}?s=200&d=mm" alt="" />
+                    </div>
+                    <div class="col-sm-9">
+                        <h3><span translate="LABEL_HELLO"></span>, <strong edit="user.saveName(name)"
+                                           class="tip"
+                                           data-container="body"
+                                           title="{{ 'TOOLTIP_CLICK_TO_EDIT' | translate }}"
+                                           data-placement="right"
+                                           data-delay='{"show":"1000", "hide":"0"}'>{{ user.getCurrent().get('name') }}</strong>
+                        </h3>
+                        <div class="text-muted" style="margin-bottom: 20px;">{{ user.getCurrent().get('email') }}</div>
+
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="info-counter">{{ Snippets.snippets.length }}</div>
+                                <span class="info-category text-muted" translate="LABEL_SNIPPETS"></span>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="info-counter">{{ Snippets.groups.length }}</div>
+                                <span class="info-category text-muted" translate="LABEL_GROUPS"></span>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="info-counter info-icons">
+                                    <span class="fa fa-apple" ng-class="{active: user.getCurrent().get('payMac')}"></span>
+                                    &nbsp;
+                                    <span class="fa fa-windows" ng-class="{active: user.getCurrent().get('payWin')}"></span>
+                                </div>
+                                <span class="info-category text-muted" translate="LABEL_PLATFORMS"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="row">
+                    <div class="col-sm-12 text-primary" style="text-align: center;">
+                        <div ng-hide="user.resetPassword">
+                            <button class="reset-password" ng-click="user.resetPassword = true" translate="LABEL_RESET_PASSWORD"></button>
+                            &nbsp;
+                            <button class="delete-account" ng-click="destroyAll()" translate="LABEL_DELETE_ACCOUNT"></button>
+                        </div>
+
+                        <div class="row" ng-if="user.resetPassword">
+                            <div class="col-sm-6 col-sm-offset-3">
+                                <input class="form-control input-sm"
+                                    enter="user.reset(newPassword)"
+                                    ng-model="newPassword"
+                                    placeholder="{{ 'PLACEHOLDER_ENTER_NEW_PASS' | translate }}"
+                                    type="text"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

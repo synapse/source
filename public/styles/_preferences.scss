@@ -1,0 +1,113 @@
+
+/* THEMES */
+.theme-item {
+    margin-bottom: 15px;
+
+    a {
+        cursor: pointer !important;
+    }
+
+    .thumbnail {
+        margin-bottom: 2px;
+    }
+
+    span {
+        display: block;
+        font-size: 12px;
+        text-align: center;
+    }
+}
+
+.filter-syntax {
+    width: 40%;
+}
+
+#languages {
+
+    .panel {
+        margin: 0 !important;
+    }
+
+    tbody {
+        max-height: 300px;
+        overflow-y: auto;
+        display: block;
+
+        tr {
+            display: table;
+            width: 100%;
+        }
+    }
+}
+
+#themes {
+    .thumbnail {
+        &.active {
+            background-color: #337ab7;
+        }
+    }
+}
+
+.syntax-item {
+    display: block;
+    margin-top: 1px;
+    margin: 0;
+    padding-left: 5px;
+    padding-right: 5px;
+    font-weight: 400;
+}
+
+.switch {
+    position: relative;
+    height: 26px;
+    width: 120px;
+    color: #000;
+    border-radius: 3px;
+    float: left;
+    margin-top: 2px;
+
+    .switch-label {
+        position: relative;
+        z-index: 2;
+        float: left;
+        width: 58px;
+        line-height: 26px;
+        font-size: 11px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .switch-input {
+        display: none;
+    }
+
+    .switch-input:checked + .switch-label {
+        font-weight: bold;
+        color: #fff;
+        transition: 0.15s ease-out;
+    }
+
+    .switch-input:checked + .switch-label-on ~ .switch-selection {
+        left: 60px;
+    }
+
+    .switch-selection {
+        display: block;
+        position: absolute;
+        z-index: 1;
+        top: 2px;
+        left: 2px;
+        width: 53px;
+        height: 22px;
+        background: #166cd6;
+        border-radius: 3px;
+        transition: left 0.15s ease-out;
+    }
+
+    .switch-blue .switch-selection {
+        background: #3aa2d0;
+    }
+    .switch-yellow .switch-selection {
+        background: #c4bb61;
+    }
+}

@@ -1,0 +1,197 @@
+@import "font-awesome.min";
+@import "roboto";
+@import "variables";
+@import "splitpane";
+@import "overwrites";
+@import "macros";
+@import "pane";
+@import "toolbar";
+@import "lists";
+@import "dropdown";
+@import "login";
+@import "modal";
+@import "loader1";
+@import "dragzone";
+@import "hotkeys";
+@import "offline";
+@import "tags";
+@import "scrollbars";
+@import "profile";
+@import "preferences";
+
+* {
+	outline: none;
+}
+
+html, body {
+	font-family: 'Roboto', sans-serif;
+	font-weight: 300;
+	height: 100%;
+	min-height: 100%;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+.login {
+	#offline {
+		display: none;
+	}
+}
+
+a, a:hover, a:active, a:focus {
+	text-decoration: none;
+	cursor: default;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	cursor: default;
+}
+
+.ng-view {
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0
+}
+
+.offline {
+	.split-pane {
+		filter: blur(1px);
+	}
+	.modal-backdrop {
+		display: none !important;
+	}
+}
+
+
+
+// Snippet edit
+.snippetTitle {
+	border: none;
+	outline: none;
+	height: 100%;
+	width: 100%;
+	font-weight: 400;
+	padding-right: 50px;
+}
+
+.share-wrapper {
+
+	.toggle-share {
+		position: absolute;
+		right: 12px;
+		top: 13px;
+		border: none;
+		background: transparent;
+		font-size: 18px;
+		opacity: 0.4;
+
+		&:hover {
+			opacity: 1;
+		}
+	}
+
+	&.active {
+		.share {
+			display: block;
+		}
+
+		.toggle-share {
+			opacity: 1;
+		}
+	}
+
+	.share {
+		position: absolute;
+		bottom: -40px;
+		background: #eee;
+		padding: 5px;
+		right: 6px;
+		z-index: 999;
+		border-radius: 3px;
+		width: 260px;
+		display: none;
+		box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.5);
+		//transition: all 0.3s;
+
+		i.fa-spin {
+			display: none;
+			left: -10px
+		}
+
+		.exec-share {
+			position: absolute;
+		    right: 7px;
+		    top: 8px;
+		    background-color: transparent;
+		    border: none;
+		    outline: none;
+		    opacity: 0.4;
+		    font-size: 15px;
+
+			&:hover {
+				opacity: 1;
+			}
+		}
+
+		&.loading {
+			padding-left: 35px;
+  			width: 285px;
+
+			i.fa-spin {
+				position: absolute;
+				left: 13px;
+				top: 14px;
+				display: block;
+				font-size: 15px;
+				color: #777;
+			}
+
+			.exec-share {
+				display: none;
+			}
+		}
+
+		&:after {
+			bottom: 100%;
+			right: 10px;
+			border: solid transparent;
+			content: " ";
+			height: 0;
+			width: 0;
+			position: absolute;
+			pointer-events: none;
+			border-color: rgba(255, 255, 255, 0);
+			border-bottom-color: #eee;
+			border-width: 10px;
+		}
+
+		input {
+			width: 100%;
+			height: 30px;
+			padding: 0 5px;
+			box-shadow: 0px 0.5px 1px rgba(0,0,0,0.1) inset;
+		    border: 1px solid #ddd;
+		    border-radius: 3px;
+		    font-size: 12px;
+			padding-right: 25px;
+			padding-left: 7px;
+		}
+	}
+}
+
+.ace_editor {
+	height: 100%;
+}
+
+
+.logo {
+	background-image: url(logo.png);
+	background-size: 198px 51px;
+	background-repeat: no-repeat;
+	width: 198px;
+	height: 51px;
+}

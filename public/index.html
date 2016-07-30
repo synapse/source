@@ -1,0 +1,38 @@
+<!doctype html>
+<html class="no-js" lang="" ng-app="Code">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Source</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="styles/bootstrap.css" />
+        <link rel="stylesheet" href="styles.css" />
+        <script>
+            var OS = window.navigator.platform;
+            document.documentElement.className += " "+ OS;
+
+            if(typeof require !== 'undefined') {
+                window.$ = window.jQuery = require('./ace/jquery.min.js');
+            }
+        </script>
+    </head>
+    <body ng-class="{offline: (!online && !useOffline)}" class="{{ pageClass }}">
+        <div id="offline" ng-hide="online || useOffline" class="noselect">
+            <div class="info-text">
+                <div class="offline-logo"></div>
+                <h3>You are currently offline</h3>
+                <p>Your library cannot be shown because you aren't connected to the internet. When you're back online this message will automatically disappear and your library will be reloaded.</p>
+                <small>Warning: all offline modifications may be lost.</small>
+                <button class="btn btn-xs btn-default" ng-click="useOffline = true">Use offline</button>
+            </div>
+        </div>
+
+        <div id="appView" class="ng-view"></div>
+
+        <script src="ace/libs.js"></script>
+        <script src="ace/ace.js"></script>
+        <script src="app/app.min.js"></script>
+    </body>
+</html>

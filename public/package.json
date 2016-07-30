@@ -1,0 +1,10 @@
+{
+  "main": "main.js",
+  "name": "Source",
+  "description": "Source app",
+  "version": "1.0",
+  "keywords": [
+    "source",
+    "code"
+  ]
+}

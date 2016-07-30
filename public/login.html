@@ -1,0 +1,116 @@
+
+<div class="system-buttons">
+    <button class="system quit" ng-click="Bridge.quit()"></button>
+    <button class="system minimize" ng-click="Bridge.minimize()"></button>
+    <button class="system maximize" ng-click="Bridge.maximize()"></button>
+</div>
+
+<div class="toolbar-login"></div>
+
+<div id="user">
+
+    <div id="login" ng-show="user.step == 1">
+        <div class="logo"></div>
+
+        <div ng-hide="user.loggingIn">
+            <form novalidate>
+                <div class="input-wrapper">
+                    <input name="email" type="email" ng-model="user.username" placeholder="{{ 'PLACEHOLDER_EMAIL' | translate }}" required />
+                </div>
+                <div class="input-wrapper">
+                    <input name="password" type="password" ng-model="user.password" placeholder="{{ 'PLACEHOLDER_PASSWORD' | translate }}" required />
+                </div>
+
+                <button ng-click="user.login(redirect)" translate="LABEL_LOGIN"></button>
+            </form>
+
+            <div class="text-center">
+                <a href="" ng-click="user.step = 2" translate="LABEL_NOT_REGISTERED"></a> &nbsp;
+                <a href="" ng-click="user.step = 3" translate="LABEL_LOST_PASSWORD"></a>
+            </div>
+        </div>
+
+        <div class="loader" ng-show="user.loggingIn">
+            <svg class="spinner" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+            </svg>
+        </div>
+    </div>
+
+    <div id="register" ng-show="user.step == 2">
+        <div class="logo"></div>
+
+        <form novalidate>
+            <div class="input-wrapper">
+                <input type="text" ng-model="user.name" placeholder="{{ 'PLACEHOLDER_NAME' | translate }}" />
+            </div>
+            <div class="input-wrapper">
+                <input type="email" ng-model="user.username" placeholder="{{ 'PLACEHOLDER_EMAIL' | translate }}" />
+            </div>
+            <div class="input-wrapper">
+                <input type="password" ng-model="user.password" placeholder="{{ 'PLACEHOLDER_PASSWORD' | translate }}" />
+            </div>
+            <div class="input-wrapper">
+                <input type="password" ng-model="user.repassword" placeholder="{{ 'PLACEHOLDER_CONFIRM_PASSWORD' | translate }}" />
+            </div>
+
+            <label class="agreement" for="agreement">
+                <input id="agreement" ng-model="user.agreement" ng-true-value="1" ng-false-value="0" type="checkbox"/> <span translate="LABEL_I_ACCEPT"></span> <a class="weight400" ng-click="user.showTerms()" translate="LABEL_TERMS_AND_PRIVACY"></a>.
+            </label>
+
+            <button ng-click="user.register(redirect)" translate="LABEL_REGISTER"></button>
+        </form>
+
+        <div class="text-center">
+            <a href="" ng-click="user.step = 1" translate="LABEL_ALREADY_REGISTERED"></a> &nbsp;
+            <a href="" ng-click="user.step = 3" translate="LABEL_LOST_PASSWORD"></a>
+        </div>
+    </div>
+
+    <div id="recover" ng-show="user.step == 3">
+        <div class="logo"></div>
+
+        <form novalidate>
+            <div class="input-wrapper">
+                <input type="email" ng-model="user.username" placeholder="{{ 'PLACEHOLDER_EMAIL' | translate }}" />
+            </div>
+
+            <button ng-click="user.recover(login)" translate="LABEL_RECOVER"></button>
+        </form>
+
+        <div class="text-center">
+            <a href="" ng-click="user.step = 1" translate="LABEL_I_REMEMBER_PASSWORD"></a> &nbsp;
+        </div>
+    </div>
+
+    <div id="activate" ng-show="user.step == 4">
+        <div class="logo"></div>
+
+        <div ng-hide="user.activating">
+            <form novalidate>
+                <div class="input-wrapper">
+                    <input name="email" type="email" ng-model="user.username" placeholder="{{ 'PLACEHOLDER_EMAIL' | translate }}" required />
+                </div>
+                <div class="input-wrapper">
+                    <input class="key" type="text" ng-model="user.key" placeholder="{{ 'PLACEHOLDER_ACTIVATION_KEY' | translate }}" required />
+                </div>
+
+                <button ng-click="user.activate()" translate="LABEL_ACTIVATE"></button>
+            </form>
+
+            <div class="text-center">
+                <a href="" ng-click="user.step = 1" translate="LABEL_ALREADY_ACTIVATED"></a> &nbsp;
+                <a href="" ng-click="openContacts()" translate="LABEL_DIDNT_RECEIVE_ACTIVATION"></a><br />
+                <a href="" ng-click="openStore()" translate="LABEL_PURCHASED_ACTIVATION_KEY"></a>
+            </div>
+        </div>
+
+        <div class="loader" ng-show="user.activating">
+            <svg class="spinner" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+            </svg>
+        </div>
+
+    </div>
+
+</div>
